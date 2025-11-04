@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/presentation/bloc/theme_cubit.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/presentation/bloc/theme_state.dart';
+import '../../../core/app_state/theme_state/domain/entities/app_theme.dart';
+import '../../../core/app_state/theme_state/presentation/bloc/theme_cubit.dart';
+import '../../../core/app_state/theme_state/presentation/bloc/theme_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

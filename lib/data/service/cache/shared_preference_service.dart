@@ -1,4 +1,4 @@
-import 'package:flutter_bloc_theme_management/data/service/cache/cache_service.dart';
+import 'package:flutter_bloc_template/data/service/cache/cache_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService implements CacheService {

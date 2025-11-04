@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_theme_management/core/di/dependency_injection.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/presentation/bloc/theme_cubit.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/presentation/bloc/theme_state.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/theme/theme.dart';
-import 'package:flutter_bloc_theme_management/presentation/features/home/views/home_screen.dart';
+import 'package:flutter_bloc_template/presentation/core/theme/theme.dart';
+
+import 'core/di/dependency_injection.dart';
+import 'presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
+import 'presentation/core/app_state/theme_state/presentation/bloc/theme_cubit.dart';
+import 'presentation/core/app_state/theme_state/presentation/bloc/theme_state.dart'
+    show ThemeState;
+import 'presentation/features/home/views/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

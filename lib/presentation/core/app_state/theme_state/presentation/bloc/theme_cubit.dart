@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/domain/use_cases/theme_use_case.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/presentation/bloc/theme_state.dart';
+import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
+import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/use_cases/theme_use_case.dart';
+import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/presentation/bloc/theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
   final GetThemeUseCase getThemeUseCase;

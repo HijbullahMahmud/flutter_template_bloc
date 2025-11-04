@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc_theme_management/presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
+import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/entities/app_theme.dart';
 
 class ThemeState extends Equatable {
   final AppTheme appTheme;
