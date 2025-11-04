@@ -1,4 +1,4 @@
-package com.example.flutter_bloc_theme_management
+package com.tenfingers.flutter_bloc_template
 
 import io.flutter.embedding.android.FlutterActivity
 
