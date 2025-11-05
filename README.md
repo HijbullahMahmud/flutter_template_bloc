@@ -31,6 +31,37 @@ This template is particularly useful for:
 - Dependency injection using GetIt
 - Structured project layout
 - Cross-platform support (iOS, Android, Web, macOS, Linux, Windows)
+- Secure token management system
+- Automatic token refresh mechanism
+- Authentication state handling
+
+## 🔐 Authentication & Token Management
+
+The template includes a robust authentication system with the following features:
+
+### Token Management
+
+- Secure token storage using encrypted storage
+- Access token and refresh token handling
+- Automatic token refresh mechanism
+- Token expiration management
+- Secure token removal on logout
+
+### Authentication Flow
+
+- Implements standard OAuth 2.0 token-based authentication
+- Automatic handling of 401 unauthorized responses
+- Silent token refresh in the background
+- Session management with automatic logout on token expiration
+- Secure storage of authentication credentials
+
+### Implementation Details
+
+- Token interceptor for automatic token injection in requests
+- Refresh token interceptor for handling token expiration
+- Concurrent request handling during token refresh
+- Token rotation security measures
+- Encrypted storage for sensitive data
 
 ## 🏗️ Project Structure
 
