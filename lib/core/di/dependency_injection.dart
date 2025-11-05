@@ -2,6 +2,7 @@ import 'package:flutter_bloc_template/data/service/cache/cache_service.dart';
 import 'package:flutter_bloc_template/data/service/cache/shared_preference_service.dart';
 import 'package:flutter_bloc_template/data/service/remote/dio_network_service_impl.dart';
 import 'package:flutter_bloc_template/data/service/remote/network_service.dart';
+import 'package:flutter_bloc_template/data/service/remote/token_manager.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/data/datasource/theme_local_datasource.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/data/repository/theme_repository_impl.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/repository/theme_repository.dart';
@@ -19,7 +20,12 @@ Future<void> initDependencies() async {
   );
 
   //Remote
-  injector.registerLazySingleton<NetworkService>(() => DioNetworkServiceImpl());
+  injector.registerLazySingleton<TokenManager>(
+    () => TokenManager(injector.get<CacheService>()),
+  );
+  injector.registerLazySingleton<NetworkService>(
+    () => DioNetworkServiceImpl(tokenManager: injector.get<TokenManager>()),
+  );
 }
 
 //-------Datasources-------//
@@ -28,7 +34,6 @@ void initDataSource() {
     () => ThemeLocalDatasourceImpl(cacheService: injector.get<CacheService>()),
   );
 }
-
 
 //-------Repositories-------//
 void initRepositories() {
@@ -46,7 +51,6 @@ void initUseCases() {
     () => SetThemeUseCase(repository: injector.get<ThemeRepository>()),
   );
 }
-
 
 //-------BloCs-------//
 void initBlocs() {

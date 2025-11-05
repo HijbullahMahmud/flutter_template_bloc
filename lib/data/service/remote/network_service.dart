@@ -40,4 +40,5 @@ abstract class NetworkService {
   void addHeader(String key, String value);
   void removeHeader(String key);
   Dio get dio;
+  String get baseUrl;
 }

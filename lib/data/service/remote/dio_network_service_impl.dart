@@ -1,26 +1,38 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_bloc_template/core/constants/api_endpoints.dart';
 import 'package:flutter_bloc_template/core/core/error/custom_error.dart';
 import 'package:flutter_bloc_template/core/core/error/error_handler.dart';
 import 'package:flutter_bloc_template/data/service/remote/network_service.dart';
+import 'package:flutter_bloc_template/data/service/remote/token_interceptor.dart';
+import 'package:flutter_bloc_template/data/service/remote/token_manager.dart';
 
 class DioNetworkServiceImpl extends NetworkService {
   late final Dio _dio;
+  final TokenManager? _tokenManager;
 
   DioNetworkServiceImpl({
-    String? baseUrl,
     Duration? connectTimeout,
     Duration? receiveTimeout,
     Map<String, dynamic>? headers,
-  }) {
+    TokenManager? tokenManager,
+    Future<bool> Function()? onTokenRefresh,
+  }) : _tokenManager = tokenManager {
     _dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl ?? '',
+        baseUrl: baseUrl,
         connectTimeout: connectTimeout ?? const Duration(seconds: 30),
         receiveTimeout: receiveTimeout ?? const Duration(seconds: 30),
         headers: headers ?? {'Content-Type': 'application/json'},
       ),
     );
+
+    // Add Token Interceptor if TokenManager is provided
+    if (_tokenManager != null) {
+      _dio.interceptors.add(
+        TokenInterceptor(_tokenManager, onTokenRefresh: onTokenRefresh),
+      );
+    }
 
     // Add interceptors if needed
     _dio.interceptors.add(
@@ -159,4 +171,7 @@ class DioNetworkServiceImpl extends NetworkService {
   void addHeader(String key, String value) {
     _dio.options.headers[key] = value;
   }
+
+  @override
+  String get baseUrl => ApiEndpoints.baseUrl;
 }
