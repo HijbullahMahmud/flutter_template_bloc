@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_template/presentation/features/settings/widgets/dark_theme_switch.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -10,6 +11,18 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text("Settings")));
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            spacing: 16,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [DarkThemeSwitch()],
+          ),
+        ),
+      ),
+    );
   }
 }
