@@ -8,6 +8,7 @@ import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/da
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/repository/theme_repository.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/use_cases/theme_use_case.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/presentation/bloc/theme_cubit.dart';
+import 'package:flutter_bloc_template/presentation/core/router/app_router.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,6 +27,9 @@ Future<void> initDependencies() async {
   injector.registerLazySingleton<NetworkService>(
     () => DioNetworkServiceImpl(tokenManager: injector.get<TokenManager>()),
   );
+
+  // Router
+  injector.registerLazySingleton<AppRouter>(()=> AppRouter());
 }
 
 //-------Datasources-------//
