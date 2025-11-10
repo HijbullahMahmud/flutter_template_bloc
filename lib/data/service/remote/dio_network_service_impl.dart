@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_bloc_template/core/constants/api_endpoints.dart';
+import 'package:flutter_bloc_template/core/utility/api_endpoints.dart';
 import 'package:flutter_bloc_template/core/base/error/custom_error.dart';
 import 'package:flutter_bloc_template/core/base/error/error_handler.dart';
 import 'package:flutter_bloc_template/data/service/remote/network_service.dart';

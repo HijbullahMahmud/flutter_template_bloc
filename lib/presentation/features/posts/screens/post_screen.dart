@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/core/di/dependency_injection.dart';
+import 'package:flutter_bloc_template/core/extensions/app_localization.dart';
 import 'package:flutter_bloc_template/domain/post/entities/post.dart';
 import 'package:flutter_bloc_template/domain/post/usecases/get_posts_usecase.dart';
+import 'package:flutter_bloc_template/presentation/core/widgets/empty_result.dart';
 import 'package:flutter_bloc_template/presentation/core/widgets/loading_indicator.dart';
 import 'package:flutter_bloc_template/presentation/features/posts/bloc/post_bloc.dart';
 
@@ -64,7 +66,7 @@ class _PostScreenState extends State<PostScreen> {
                 controller: searchController,
                 focusNode: _searchFocusNode,
                 decoration: InputDecoration(
-                  hint: Text("Search"),
+                  hint: Text(context.locale.search),
                   suffixIcon: IconButton(
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(),
@@ -113,61 +115,69 @@ class _PostScreenState extends State<PostScreen> {
           },
         ],
       ),
-      body: BlocConsumer<PostBloc, PostState>(
-        bloc: _bloc,
-        builder: (context, state) {
-          if (state is LoadingGetPostsState) {
-            return Center(child: LoadingIndicator());
-          } else if (state is ErrorGetPostsState) {
-            return Center(child: Text("Erorr: ${state.message}"));
-          }
-          //Check it there is no data
-          if (allPosts.isEmpty) {
-            return Center(child: Text("Empty"));
-          }
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: BlocConsumer<PostBloc, PostState>(
+          bloc: _bloc,
+          builder: (context, state) {
+            if (state is LoadingGetPostsState) {
+              return Center(child: LoadingIndicator());
+            } else if (state is ErrorGetPostsState) {
+              return Center(
+                child: EmptyResultView(
+                  message: state.message,
+                  onRetryPressed: loadPosts,
+                ),
+              );
+            }
+            //Check it there is no data
+            if (allPosts.isEmpty) {
+              return Center(child: EmptyResultView(message: "Empty"));
+            }
 
-          return RefreshIndicator(
-            onRefresh: () {
-              loadPosts();
-              return Future.delayed(Duration.zero);
-            },
-            child: ListView.builder(
-              itemCount: allPosts.length,
-              // shrinkWrap: true,
-              controller: _scrollController,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == allPosts.length) {
-                  if (state is LoadingMorePostsState) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(child: LoadingIndicator()),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                }
-
-                final post = allPosts[index];
-                return ListTile(
-                  leading: Text("${post.id}"),
-                  title: Text(post.title),
-                  subtitle: Text(post.body),
-                );
+            return RefreshIndicator(
+              onRefresh: () {
+                loadPosts();
+                return Future.delayed(Duration.zero);
               },
-            ),
-          );
-        },
-        listener: (context, state) {
-          if (state is SuccessGetPostsState) {
-            allPosts.clear();
-            allPosts = List.from(state.posts);
-          } else if (state is SearchingState) {
-            allPosts.clear();
-            allPosts = state.posts;
-          } else if (state is LoadingMorePostsState) {
-            allPosts = List.from(state.oldPosts);
-          }
-        },
+              child: ListView.builder(
+                itemCount: allPosts.length,
+                // shrinkWrap: true,
+                controller: _scrollController,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == allPosts.length) {
+                    if (state is LoadingMorePostsState) {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(child: LoadingIndicator()),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }
+
+                  final post = allPosts[index];
+                  return ListTile(
+                    leading: Text("${post.id}"),
+                    title: Text(post.title),
+                    subtitle: Text(post.body),
+                  );
+                },
+              ),
+            );
+          },
+          listener: (context, state) {
+            if (state is SuccessGetPostsState) {
+              allPosts.clear();
+              allPosts = List.from(state.posts);
+            } else if (state is SearchingState) {
+              allPosts.clear();
+              allPosts = state.posts;
+            } else if (state is LoadingMorePostsState) {
+              allPosts = List.from(state.oldPosts);
+            }
+          },
+        ),
       ),
     );
   }

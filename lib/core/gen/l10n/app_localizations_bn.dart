@@ -46,7 +46,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get resetPassword => 'পাসওয়ার্ড রিসেট করুন';
 
   @override
-  String get newPassword => 'New Password';
+  String get newPassword => 'নতুন পাসওয়ার্ড';
 
   @override
   String get passwordChangeSuccess => 'পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে';
@@ -62,6 +62,9 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get validEmail => 'অনুগ্রহ করে একটি বৈধ ইমেইল ঠিকানা দিন';
+
+  @override
+  String get retry => 'আবার চেষ্টা করুন';
 
   @override
   String get enterAssociatedEmail =>
@@ -82,7 +85,7 @@ class AppLocalizationsBn extends AppLocalizations {
       'আপনার পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে।';
 
   @override
-  String get confirmPassword => 'Confirm Password';
+  String get confirmPassword => 'পাসওয়ার্ড নিশ্চিত করুন';
 
   @override
   String get logout => 'লগআউট';
@@ -97,7 +100,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get forgotPassword => 'পাসওয়ার্ড ভুলে গেছেন';
 
   @override
-  String get backToLogin => 'Back to login';
+  String get backToLogin => 'লগইনে ফিরে যান';
 
   @override
   String get continueAction => 'চালিয়ে যান';
@@ -121,10 +124,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String get password => 'পাসওয়ার্ড';
 
   @override
-  String get firstName => 'First Name';
+  String get firstName => 'প্রথম নাম';
 
   @override
-  String get lastName => 'Last Name';
+  String get lastName => 'শেষ নাম';
 
   @override
   String get dontHaveAccount => 'অ্যাকাউন্ট নেই? ';
@@ -210,272 +213,5 @@ class AppLocalizationsBn extends AppLocalizations {
   String get off => 'ছাড়';
 
   @override
-  String get shopNow => 'Shop Now';
-
-  @override
-  String get addToCart => 'Add To Cart';
-
-  @override
-  String get bestDeals => 'Best Deals';
-
-  @override
-  String get newArrivals => 'New Arrivals';
-
-  @override
-  String get featuredProducts => 'Featured Products';
-
-  @override
-  String get topBrands => 'Top Brands';
-
-  @override
-  String get search => 'Search';
-
-  @override
-  String get selectColor => 'Select Color:';
-
-  @override
-  String get variant => 'Variant:';
-
-  @override
-  String get deliveryTimeScale => 'Delivery Timescale:';
-
-  @override
-  String get description => 'Description';
-
-  @override
-  String get detail => 'Details';
-
-  @override
-  String get review => 'Review';
-
-  @override
-  String get cart => 'Cart';
-
-  @override
-  String get orderSummary => 'Order Summary';
-
-  @override
-  String get promoCode => 'Promo Code';
-
-  @override
-  String get apply => 'Apply';
-
-  @override
-  String get subTotal => 'Sub Total';
-
-  @override
-  String get shipping => 'Shipping';
-
-  @override
-  String get tax => 'Tax';
-
-  @override
-  String get totalAmount => 'Total Amount';
-
-  @override
-  String get checkout => 'Checkout';
-
-  @override
-  String get checkoutAndConfirmOrder => 'Checkout & Confirm Order';
-
-  @override
-  String get confirmOrder => 'Confirm Order';
-
-  @override
-  String get deliveryInformation => 'Delivery Information';
-
-  @override
-  String get addNew => 'Add New';
-
-  @override
-  String get paymentType => 'Payment Type';
-
-  @override
-  String get cashOnDelivery => 'Cash On Delivery';
-
-  @override
-  String get onlinePayment => 'Online Payment';
-
-  @override
-  String get paymentMethod => 'Payment Method';
-
-  @override
-  String get itemList => 'Item List';
-
-  @override
-  String get name => 'Name';
-
-  @override
-  String get phone => 'Phone';
-
-  @override
-  String get address => 'Address';
-
-  @override
-  String get addNewAddress => 'Add New Address';
-
-  @override
-  String get phoneNumber => 'Phone Number';
-
-  @override
-  String get state => 'State';
-
-  @override
-  String get city => 'City';
-
-  @override
-  String get zipCode => 'ZIP Code';
-
-  @override
-  String get save => 'Save';
-
-  @override
-  String get editAddress => 'Edit Address';
-
-  @override
-  String get filter => 'Filter';
-
-  @override
-  String get sort => 'Sort';
-
-  @override
-  String get resultFound => 'results found';
-
-  @override
-  String get order => 'Order';
-
-  @override
-  String get wishList => 'Wishlist';
-
-  @override
-  String get coupons => 'Coupons';
-
-  @override
-  String get addresses => 'Addresses';
-
-  @override
-  String get changePassword => 'Change Password';
-
-  @override
-  String get copy => 'Copy';
-
-  @override
-  String get code => 'Code';
-
-  @override
-  String get currentPassword => 'Current Password';
-
-  @override
-  String get recentSearch => 'Recent Search';
-
-  @override
-  String get recentlyViewed => 'Recently viewed';
-
-  @override
-  String get orderId => 'Order ID';
-
-  @override
-  String get completed => 'Completed';
-
-  @override
-  String get pending => 'Pending';
-
-  @override
-  String get viewDetails => 'View Details';
-
-  @override
-  String get total => 'Total';
-
-  @override
-  String get orderDetail => 'Order Details';
-
-  @override
-  String get orderConfirmation => 'Order Confirmation';
-
-  @override
-  String get createOrder => 'Order Created';
-
-  @override
-  String get orderProcessing => 'Order Processing';
-
-  @override
-  String get customerPayment => 'Customer Payment';
-
-  @override
-  String get onDelivery => 'On Delivery';
-
-  @override
-  String get orderCompleted => 'Order Completed';
-
-  @override
-  String get cancelOrder => 'Cancel Order';
-
-  @override
-  String get exploreMore => 'Explore More';
-
-  @override
-  String get editAccount => 'Edit Account';
-
-  @override
-  String get exploreTheApp => 'Explore The App';
-
-  @override
-  String get loginPageMessage =>
-      'Now your E-commerce are in one place and always under control';
-
-  @override
-  String get acceptTerm => 'I accept terms and privacy policy';
-
-  @override
-  String get sendCode => 'Send Code';
-
-  @override
-  String get verify => 'Verify';
-
-  @override
-  String get weveSendACodeTo => 'We\'ve send a code to';
-
-  @override
-  String get sendCodeAgain => 'Send code again';
-
-  @override
-  String get pleaseCheckYourEmail => 'Please check your email';
-
-  @override
-  String get orLoginWith => 'or login with';
-
-  @override
-  String get forgotPasswordInfo =>
-      'Don’t worry! It happens. Please enter the email associated with your account.';
-
-  @override
-  String get resetPasswordInfo => 'Please type something you’ll remember';
-
-  @override
-  String get passwordChanged => 'Password Changed';
-
-  @override
-  String get yourPasswordHasBeenChanged =>
-      'Your password has been changed succesfully';
-
-  @override
-  String get allCategories => 'All Categories';
-
-  @override
-  String get reply => 'Reply';
-
-  @override
-  String get from => 'From';
-
-  @override
-  String get specification => 'Specification';
-
-  @override
-  String get model => 'Model';
-
-  @override
-  String get brand => 'Brand';
-
-  @override
-  String get summary => 'Summary';
+  String get search => 'অনুসন্ধান';
 }

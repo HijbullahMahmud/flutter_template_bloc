@@ -1,5 +1,6 @@
-import 'package:apple_gadgets/application/assets_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_template/core/utility/asset_paths.dart';
+import 'package:flutter_bloc_template/core/extensions/app_localization.dart';
 import 'package:lottie/lottie.dart';
 
 class EmptyResultView extends StatelessWidget {
@@ -15,28 +16,27 @@ class EmptyResultView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.sizeOf(context);
     return Container(
-      // color: Colors.amber,
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
+        spacing: 16,
         children: [
-          Lottie.asset(AssetsUtils.emptyResult, height: 150, width: 150),
+          Lottie.asset(AssetPaths.empty, height: 150, width: 150),
           Text(
             message ?? '',
             textAlign: TextAlign.center,
             style: messageTextStyle ?? Theme.of(context).textTheme.bodyMedium,
           ),
-          const SizedBox(height: 10),
+
           Visibility(
             visible: onRetryPressed != null,
-            child: ElevatedButton(
+            child: FilledButton(
               onPressed: onRetryPressed,
               style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-              child: const Text("Retry"),
+              child: Text(context.locale.retry),
             ),
           ),
         ],

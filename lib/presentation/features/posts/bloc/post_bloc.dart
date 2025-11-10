@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_template/core/constants/api_endpoints.dart';
+import 'package:flutter_bloc_template/core/utility/api_endpoints.dart';
 import 'package:flutter_bloc_template/domain/post/usecases/get_posts_usecase.dart';
 
 import '../../../../domain/post/entities/post.dart';
