@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_bloc_template/core/core/error/custom_error.dart';
+import 'package:flutter_bloc_template/core/base/error/custom_error.dart';
 import 'package:flutter_bloc_template/data/post/datasources/local/post_local_datasource.dart';
 import 'package:flutter_bloc_template/data/post/datasources/remote/post_remote_datasource.dart';
 import 'package:flutter_bloc_template/data/post/mapper/post_dto_mapper.dart';

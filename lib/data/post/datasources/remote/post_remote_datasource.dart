@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc_template/core/core/error/custom_error.dart';
+import 'package:flutter_bloc_template/core/base/error/custom_error.dart';
 import 'package:flutter_bloc_template/data/post/models/post_dto.dart';
 import 'package:flutter_bloc_template/data/service/remote/network_service.dart';
 

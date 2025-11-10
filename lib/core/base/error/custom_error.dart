@@ -1,4 +1,4 @@
-import 'package:flutter_bloc_template/core/core/error/error_type.dart';
+import 'package:flutter_bloc_template/core/base/error/error_type.dart';
 
 class CustomError {
   final String message;
