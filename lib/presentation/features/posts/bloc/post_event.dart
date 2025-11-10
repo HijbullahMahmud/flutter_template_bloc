@@ -12,6 +12,14 @@ class OnGettingPostEvent extends PostEvent {
   OnGettingPostEvent(this.query, {this.withLoading = true});
 }
 
+// On Pagination
+class OnLoadMorePostsEvent extends PostEvent{
+  final String query;
+
+  OnLoadMorePostsEvent({required this.query});
+
+}
+
 // On Searching post event
 class OnsearchingPostEvent extends PostEvent {
   final String query;

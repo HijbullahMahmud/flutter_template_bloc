@@ -19,7 +19,8 @@ class _PostScreenState extends State<PostScreen> {
 
   final searchController = TextEditingController();
   bool isSearching = false;
-  FocusNode _searchFocusNode = FocusNode();
+  final FocusNode _searchFocusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   loadPosts({bool withLoading = true}) {
     _bloc.add(
@@ -32,8 +33,25 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   void initState() {
-    loadPosts();
     super.initState();
+    loadPosts();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      // Fetch next page when close to the bottom
+      _bloc.add(OnLoadMorePostsEvent(query: searchController.text.trim()));
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    searchController.dispose();
+    _searchFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -115,8 +133,20 @@ class _PostScreenState extends State<PostScreen> {
             },
             child: ListView.builder(
               itemCount: allPosts.length,
-              shrinkWrap: true,
+              // shrinkWrap: true,
+              controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
+                if (index == allPosts.length) {
+                  if (state is LoadingMorePostsState) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(child: LoadingIndicator()),
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                }
+
                 final post = allPosts[index];
                 return ListTile(
                   leading: Text("${post.id}"),
@@ -134,6 +164,8 @@ class _PostScreenState extends State<PostScreen> {
           } else if (state is SearchingState) {
             allPosts.clear();
             allPosts = state.posts;
+          } else if (state is LoadingMorePostsState) {
+            allPosts = List.from(state.oldPosts);
           }
         },
       ),

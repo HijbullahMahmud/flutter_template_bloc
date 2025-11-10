@@ -12,10 +12,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   // List of posts
   List<Post> allPosts = [];
+  int _page = 1;
+  final int _limit = 10;
+  bool _hasMore = true;
+  bool _isFetching = false;
 
   PostBloc({required this.usecase}) : super(LoadingGetPostsState()) {
     on<OnGettingPostEvent>(_onGettingPostEvent);
     on<OnsearchingPostEvent>(_onSearchingEvent);
+    on<OnLoadMorePostsEvent>(_onLoadMorePostsEvent);
   }
 
   // Getting posts event
@@ -23,19 +28,61 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     OnGettingPostEvent event,
     Emitter<PostState> emitter,
   ) async {
+    if (_isFetching) return;
+    _isFetching = true;
+
     if (event.withLoading) {
       emitter(LoadingGetPostsState());
     }
-    final result = await usecase.call(endPoint: ApiEndpoints.posts);
+
+    _page = 1;
+    _hasMore = true;
+    allPosts.clear();
+
+    final result = await usecase.call(
+      endPoint: "${ApiEndpoints.posts}?_page=$_page&_limit=$_limit",
+    );
     result.fold(
       (error) {
         emitter(ErrorGetPostsState(message: error.message));
       },
       (r) {
         allPosts = r;
+        if (r.length < _limit) _hasMore = false;
         emitter(SuccessGetPostsState(posts: _filterPosts(event.query)));
       },
     );
+    _isFetching = false;
+  }
+
+  // Loading more
+  Future<void> _onLoadMorePostsEvent(
+    OnLoadMorePostsEvent event,
+    Emitter<PostState> emitter,
+  ) async {
+    if (!_hasMore || _isFetching) return;
+    _isFetching = true;
+
+    emitter(LoadingMorePostsState(oldPosts: List.from(allPosts)));
+
+    _page++;
+
+    final result = await usecase.call(
+      endPoint: "${ApiEndpoints.posts}?_page=$_page&_limit=$_limit",
+    );
+
+    result.fold(
+      (error) {
+        _hasMore = false;
+        emitter(ErrorGetPostsState(message: error.message));
+      },
+      (r) {
+        if (r.isEmpty) _hasMore = false;
+        allPosts.addAll(r);
+        emitter(SuccessGetPostsState(posts: _filterPosts(event.query)));
+      },
+    );
+    _isFetching = false;
   }
 
   // Searching Posts event

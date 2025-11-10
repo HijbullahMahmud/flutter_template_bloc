@@ -20,6 +20,13 @@ class SuccessGetPostsState extends PostState {
   SuccessGetPostsState({required this.posts});
 }
 
+// Pagination
+class LoadingMorePostsState extends PostState {
+  final List<Post> oldPosts;
+
+  LoadingMorePostsState({required this.oldPosts});
+}
+
 // ------- Search -----------//
 class SearchingState extends PostState {
   final List<Post> posts;
