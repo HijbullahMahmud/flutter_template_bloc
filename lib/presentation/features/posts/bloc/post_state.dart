@@ -19,3 +19,10 @@ class SuccessGetPostsState extends PostState {
 
   SuccessGetPostsState({required this.posts});
 }
+
+// ------- Search -----------//
+class SearchingState extends PostState {
+  final List<Post> posts;
+
+  SearchingState({required this.posts});
+}

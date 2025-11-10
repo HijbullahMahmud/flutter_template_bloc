@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_template/core/di/dependency_injection.dart';
 import 'package:flutter_bloc_template/domain/post/entities/post.dart';
 import 'package:flutter_bloc_template/domain/post/usecases/get_posts_usecase.dart';
+import 'package:flutter_bloc_template/presentation/core/widgets/loading_indicator.dart';
 import 'package:flutter_bloc_template/presentation/features/posts/bloc/post_bloc.dart';
 
 class PostScreen extends StatefulWidget {
@@ -16,8 +17,17 @@ class _PostScreenState extends State<PostScreen> {
   final PostBloc _bloc = PostBloc(usecase: injector.get<GetPostsUsecase>());
   List<Post> allPosts = [];
 
+  final searchController = TextEditingController();
+  bool isSearching = false;
+  FocusNode _searchFocusNode = FocusNode();
+
   loadPosts({bool withLoading = true}) {
-    _bloc.add(OnGettingPostEvent(withLoading: withLoading));
+    _bloc.add(
+      OnGettingPostEvent(
+        searchController.text.trim(),
+        withLoading: withLoading,
+      ),
+    );
   }
 
   @override
@@ -29,12 +39,67 @@ class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Posts")),
+      appBar: AppBar(
+        title: !isSearching
+            ? Text("Posts")
+            : TextField(
+                controller: searchController,
+                focusNode: _searchFocusNode,
+                decoration: InputDecoration(
+                  hint: Text("Search"),
+                  suffixIcon: IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    onPressed: () {
+                      setState(() {
+                        isSearching = !isSearching;
+                        if (isSearching) {
+                          _searchFocusNode.requestFocus();
+                        } else {
+                          if (searchController.text.isNotEmpty) {
+                            _searchFocusNode.unfocus();
+                            searchController.clear();
+                            loadPosts();
+                          } else {
+                            _searchFocusNode.unfocus();
+                            searchController.clear();
+                          }
+                        }
+                      });
+                    },
+                    icon: Icon(Icons.close),
+                  ),
+                ),
+
+                onChanged: (value) {
+                  _bloc.add(OnsearchingPostEvent(query: value.trim()));
+                },
+              ),
+        actions: [
+          if (!isSearching) ...{
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isSearching = !isSearching;
+                  if (isSearching) {
+                    _searchFocusNode.requestFocus();
+                  } else {
+                    _searchFocusNode.unfocus();
+                    searchController.clear();
+                    loadPosts();
+                  }
+                });
+              },
+              icon: Icon(Icons.search),
+            ),
+          },
+        ],
+      ),
       body: BlocConsumer<PostBloc, PostState>(
         bloc: _bloc,
         builder: (context, state) {
           if (state is LoadingGetPostsState) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: LoadingIndicator());
           } else if (state is ErrorGetPostsState) {
             return Center(child: Text("Erorr: ${state.message}"));
           }
@@ -43,23 +108,32 @@ class _PostScreenState extends State<PostScreen> {
             return Center(child: Text("Empty"));
           }
 
-          return ListView.builder(
-            itemCount: allPosts.length,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              final post = allPosts[index];
-              return ListTile(
-                leading: Text("${post.id}"),
-                title: Text(post.title),
-                subtitle: Text(post.body),
-              );
+          return RefreshIndicator(
+            onRefresh: () {
+              loadPosts();
+              return Future.delayed(Duration.zero);
             },
+            child: ListView.builder(
+              itemCount: allPosts.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                final post = allPosts[index];
+                return ListTile(
+                  leading: Text("${post.id}"),
+                  title: Text(post.title),
+                  subtitle: Text(post.body),
+                );
+              },
+            ),
           );
         },
         listener: (context, state) {
           if (state is SuccessGetPostsState) {
             allPosts.clear();
             allPosts = List.from(state.posts);
+          } else if (state is SearchingState) {
+            allPosts.clear();
+            allPosts = state.posts;
           }
         },
       ),

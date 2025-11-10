@@ -15,6 +15,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   PostBloc({required this.usecase}) : super(LoadingGetPostsState()) {
     on<OnGettingPostEvent>(_onGettingPostEvent);
+    on<OnsearchingPostEvent>(_onSearchingEvent);
   }
 
   // Getting posts event
@@ -32,8 +33,30 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       },
       (r) {
         allPosts = r;
-        emitter(SuccessGetPostsState(posts: allPosts));
+        emitter(SuccessGetPostsState(posts: _filterPosts(event.query)));
       },
     );
+  }
+
+  // Searching Posts event
+  _onSearchingEvent(
+    OnsearchingPostEvent event,
+    Emitter<PostState> emitter,
+  ) async {
+    emitter(SearchingState(posts: _filterPosts(event.query)));
+  }
+
+  List<Post> _filterPosts(String query) {
+    List<Post> results = [];
+    if (query.isEmpty) {
+      // If the search field is empty or only cotnains white-space, we'll display all users
+      results = List.from(allPosts);
+    } else {
+      results = allPosts.where((post) {
+        return (post.title).toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+
+    return results;
   }
 }

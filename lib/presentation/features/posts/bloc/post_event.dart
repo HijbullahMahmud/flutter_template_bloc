@@ -7,6 +7,14 @@ abstract class PostEvent {
 // On Fetching posts event
 class OnGettingPostEvent extends PostEvent {
   final bool withLoading;
+  final String query;
 
-  OnGettingPostEvent({this.withLoading = true});
+  OnGettingPostEvent(this.query, {this.withLoading = true});
+}
+
+// On Searching post event
+class OnsearchingPostEvent extends PostEvent {
+  final String query;
+
+  OnsearchingPostEvent({required this.query});
 }
