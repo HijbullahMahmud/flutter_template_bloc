@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_bloc_template/presentation/core/router/go_router_refresh_stream.dart';
 import 'package:flutter_bloc_template/presentation/core/router/routes.dart';
+import 'package:flutter_bloc_template/presentation/features/posts/screens/post_screen.dart';
 import 'package:flutter_bloc_template/presentation/features/splash/splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc_template/presentation/core/widgets/navigation_shell.dart';
@@ -28,6 +29,11 @@ class AppRouter {
         pageBuilder: (context, state) => MaterialPage(child: SplashScreen()),
       ),
       _shellRoute(),
+      GoRoute(
+        path: Routes.postsScreen,
+        name: Routes.postsScreen,
+        pageBuilder: (context, state) => MaterialPage(child: PostScreen()),
+      ),
     ],
 
     // Error handling

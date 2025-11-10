@@ -1,8 +1,15 @@
-import 'package:flutter_bloc_template/data/service/cache/cache_service.dart';
-import 'package:flutter_bloc_template/data/service/cache/shared_preference_service.dart';
+import 'package:flutter_bloc_template/data/post/datasources/local/post_local_datasource.dart';
+import 'package:flutter_bloc_template/data/post/datasources/remote/post_remote_datasource.dart';
+import 'package:flutter_bloc_template/data/post/repositories/post_repository_impl.dart';
+import 'package:flutter_bloc_template/data/service/local/cache_service.dart';
+import 'package:flutter_bloc_template/data/service/local/local_db.dart';
+import 'package:flutter_bloc_template/data/service/local/local_db_impl.dart';
+import 'package:flutter_bloc_template/data/service/local/shared_preference_service.dart';
 import 'package:flutter_bloc_template/data/service/remote/dio_network_service_impl.dart';
 import 'package:flutter_bloc_template/data/service/remote/network_service.dart';
 import 'package:flutter_bloc_template/data/service/remote/token_manager.dart';
+import 'package:flutter_bloc_template/domain/post/repositories/post_repository.dart';
+import 'package:flutter_bloc_template/domain/post/usecases/get_posts_usecase.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/data/datasource/theme_local_datasource.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/data/repository/theme_repository_impl.dart';
 import 'package:flutter_bloc_template/presentation/core/app_state/theme_state/domain/repository/theme_repository.dart';
@@ -15,6 +22,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 final injector = GetIt.instance;
 
 Future<void> initDependencies() async {
+  // Singleton database instance
+  final localDb = LocalDbImpl();
+  await localDb.initialize();
+  injector.registerSingleton<LocalDb>(localDb);
+
+  // Shared Preferences
   final sharedPrefs = await SharedPreferences.getInstance();
   injector.registerLazySingleton<CacheService>(
     () => SharedPreferenceService(prefs: sharedPrefs),
@@ -29,7 +42,7 @@ Future<void> initDependencies() async {
   );
 
   // Router
-  injector.registerLazySingleton<AppRouter>(()=> AppRouter());
+  injector.registerLazySingleton<AppRouter>(() => AppRouter());
 }
 
 //-------Datasources-------//
@@ -37,12 +50,30 @@ void initDataSource() {
   injector.registerFactory<ThemeLocalDatasource>(
     () => ThemeLocalDatasourceImpl(cacheService: injector.get<CacheService>()),
   );
+
+  // Posts
+  injector.registerFactory<PostLocalDatasource>(
+    () => PostLocalDatasourceImpl(localDb: injector.get<LocalDb>()),
+  );
+  injector.registerFactory<PostRemoteDatasource>(
+    () => PostRemoteDatasourceImpl(
+      networkService: injector.get<NetworkService>(),
+    ),
+  );
 }
 
 //-------Repositories-------//
 void initRepositories() {
   injector.registerFactory<ThemeRepository>(
     () => ThemeRepositoryImpl(datasource: injector.get<ThemeLocalDatasource>()),
+  );
+
+  // Posts
+  injector.registerFactory<PostRepository>(
+    () => PostRepositoryImpl(
+      remoteDatasource: injector.get<PostRemoteDatasource>(),
+      localDatasource: injector.get<PostLocalDatasource>(),
+    ),
   );
 }
 
@@ -53,6 +84,11 @@ void initUseCases() {
   );
   injector.registerFactory<SetThemeUseCase>(
     () => SetThemeUseCase(repository: injector.get<ThemeRepository>()),
+  );
+
+  // Post
+  injector.registerFactory<GetPostsUsecase>(
+    () => GetPostsUsecase(repository: injector.get<PostRepository>()),
   );
 }
 
