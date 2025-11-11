@@ -24,10 +24,7 @@ class ErrorHandler {
         );
 
       case DioExceptionType.connectionError:
-        return CustomError(
-          message: 'No internet connection. Please check your network.',
-          type: ErrorType.network,
-        );
+        return _handleConnectionError(error);
 
       case DioExceptionType.badCertificate:
         return CustomError(
@@ -41,6 +38,49 @@ class ErrorHandler {
           type: ErrorType.unknown,
         );
     }
+  }
+
+  static CustomError _handleConnectionError(DioException error) {
+    final errorMessage = error.message?.toLowerCase() ?? '';
+    final errorString = error.error?.toString().toLowerCase() ?? '';
+
+    // Check for common endpoint/URL related errors
+    if (errorMessage.contains('failed host lookup') ||
+        errorMessage.contains('nodename nor servname provided') ||
+        errorMessage.contains('no address associated with hostname') ||
+        errorString.contains('socketexception') ||
+        errorString.contains('failed host lookup')) {
+      return CustomError(
+        message: 'Invalid endpoint or server address. Please contact support.',
+        type: ErrorType.notFound,
+        statusCode: 404,
+      );
+    }
+
+    // Check for connection refused (server not running or wrong port)
+    if (errorMessage.contains('connection refused') ||
+        errorString.contains('connection refused')) {
+      return CustomError(
+        message: 'Unable to connect to server. Please try again later.',
+        type: ErrorType.server,
+        statusCode: 503,
+      );
+    }
+
+    // Check for network unreachable
+    if (errorMessage.contains('network is unreachable') ||
+        errorString.contains('network is unreachable')) {
+      return CustomError(
+        message: 'No internet connection. Please check your network.',
+        type: ErrorType.network,
+      );
+    }
+
+    // Default to generic connection error
+    return CustomError(
+      message: 'Connection error. Please check your internet or try again.',
+      type: ErrorType.network,
+    );
   }
 
   static CustomError _handleHttpError(DioException error) {
